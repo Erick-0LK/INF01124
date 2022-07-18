@@ -1,34 +1,43 @@
 import time
 import random
 
+trocas = 0
+recursoes = -1
+
 # LABORATÓRIO: 2 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # FUNÇÕES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Função que faz o mecanismo mediana de três.
-def mediana_de_tres(vetor, inicio, fim, trocas):
+def mediana_de_tres(vetor, inicio, fim):
 
+    global trocas
+    global recursoes
     meio = (inicio + fim - 1) // 2
     A = vetor[inicio]
     B = vetor[meio]
     C = vetor[fim]
 
-    if A >= C >= B or A >= B >= C:
+    if B >= A >= C or C >= A >= B:
         (vetor[inicio], vetor[fim]) = (C, A)
         trocas += 1
-    elif B >= A >= C or B >= C >= A:
+    elif A >= B >= C or C >= B >= A:
         (vetor[meio], vetor[fim]) = (C, B)
         trocas += 1
 
 # Função que faz o mecanismo aleatório.
-def aleatorio(vetor, inicio, fim, trocas):
+def aleatorio(vetor, inicio, fim):
 
+    global trocas
+    global recursoes
     auxiliar = random.randint(inicio, fim)
     (vetor[auxiliar], vetor[fim]) = (vetor[fim], vetor[auxiliar])
     trocas += 1
-    
-# Função que faz o particionamento tipo Lomuto.
-def particionamento_lomuto(vetor, inicio, fim, trocas):
 
+# Função que faz o particionamento tipo Lomuto.
+def particionamento_lomuto(vetor, inicio, fim):
+
+    global trocas
+    global recursoes
     particionador = vetor[fim]
     i = inicio - 1
 
@@ -45,8 +54,10 @@ def particionamento_lomuto(vetor, inicio, fim, trocas):
     return i + 1
 
 # Função que faz o particionamento tipo Hoare.
-def particionamento_hoare(vetor, inicio, fim, trocas):
- 
+def particionamento_hoare(vetor, inicio, fim):
+
+    global trocas
+    global recursoes
     particionador = vetor[inicio]
     i = inicio - 1
     j = fim + 1
@@ -66,34 +77,37 @@ def particionamento_hoare(vetor, inicio, fim, trocas):
  
         (vetor[i], vetor[j]) = (vetor[j], vetor[i])
         trocas += 1
-        print(trocas)
 
 # Função que faz o algoritmo Quick Sort de acordo com o particionamento e a escolha selecionados.
-def quick_sort(vetor, inicio, fim, particionamento, escolha, trocas):
+def quick_sort(vetor, inicio, fim, particionamento, escolha):
+
+    global recursoes
+    recursoes += 1
+
     if particionamento == 1:
             if inicio < fim:
                 if escolha == 1:
-                    mediana_de_tres(vetor, inicio, fim, trocas)
-                    particionador = particionamento_lomuto(vetor, inicio, fim, trocas)
-                    quick_sort(vetor, inicio, particionador - 1, 1, 1, trocas)
-                    quick_sort(vetor, particionador + 1, fim, 1, 1, trocas)
+                    mediana_de_tres(vetor, inicio, fim)
+                    particionador = particionamento_lomuto(vetor, inicio, fim)
+                    quick_sort(vetor, inicio, particionador - 1, 1, 1)
+                    quick_sort(vetor, particionador + 1, fim, 1, 1)
                 else:
-                    aleatorio(vetor, inicio, fim, trocas)
-                    particionador = particionamento_lomuto(vetor, inicio, fim, trocas)
-                    quick_sort(vetor, inicio, particionador - 1, 1, 1, trocas)
-                    quick_sort(vetor, particionador + 1, fim, 1, 1, trocas)
+                    aleatorio(vetor, inicio, fim)
+                    particionador = particionamento_lomuto(vetor, inicio, fim)
+                    quick_sort(vetor, inicio, particionador - 1, 1, 1)
+                    quick_sort(vetor, particionador + 1, fim, 1, 1)
     else:
         if inicio < fim:
             if escolha == 1:
-                mediana_de_tres(vetor, inicio, fim, trocas)
-                particionador = particionamento_hoare(vetor, inicio, fim, trocas)
-                quick_sort(vetor, inicio, particionador, 0, 1, trocas)
-                quick_sort(vetor, particionador + 1, fim, 0, 1, trocas)
+                mediana_de_tres(vetor, inicio, fim)
+                particionador = particionamento_hoare(vetor, inicio, fim)
+                quick_sort(vetor, inicio, particionador, 0, 1)
+                quick_sort(vetor, particionador + 1, fim, 0, 1)
             else:
-                aleatorio(vetor, inicio, fim, trocas)
-                particionador = particionamento_hoare(vetor, inicio, fim, trocas)
-                quick_sort(vetor, inicio, particionador, 0, 1, trocas)
-                quick_sort(vetor, particionador + 1, fim, 0, 1, trocas)
+                aleatorio(vetor, inicio, fim)
+                particionador = particionamento_hoare(vetor, inicio, fim)
+                quick_sort(vetor, inicio, particionador, 0, 1)
+                quick_sort(vetor, particionador + 1, fim, 0, 1)
 
 def escreve_stats_mediana_lomuto(string):
 
@@ -122,10 +136,7 @@ def escreve_stats_aleatorio_hoare(string):
 # LABORATÓRIO: 2 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # QUESTÃO: 1 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-trocas = 0
-
-with open(r'C:\Programas\UFRGS\Bacharelado em Ciência da Computação\Classificação & Pesquisa de Dados\entrada-quicksort.txt') as file:
-
+with open('entrada-quicksort.txt') as file:
     for line in file:
 
         line = line.split()
@@ -135,32 +146,36 @@ with open(r'C:\Programas\UFRGS\Bacharelado em Ciência da Computação\Classific
 
         clone = line.copy()
         tempo_inicio = time.time()
-        quick_sort(clone, 0, tamanho - 1, 1, 1, trocas)
+        quick_sort(clone, 0, tamanho - 1, 1, 1)
         tempo_fim = time.time()
         tempo = tempo_fim - tempo_inicio
-        escreve_stats_mediana_lomuto("TAMANHO ENRTADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES" + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        escreve_stats_mediana_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
         trocas = 0
+        recursoes = -1
 
         clone = line.copy()
         tempo_inicio = time.time()
-        quick_sort(clone, 0, tamanho - 1, 1, 0, trocas)
+        quick_sort(clone, 0, tamanho - 1, 1, 0)
         tempo_fim = time.time()
         tempo = tempo_fim - tempo_inicio
-        escreve_stats_aleatorio_lomuto("TAMANHO ENRTADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES" + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        escreve_stats_aleatorio_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
         trocas = 0
+        recursoes = -1
 
         clone = line.copy()
         tempo_inicio = time.time()
-        quick_sort(clone, 0, tamanho - 1, 0, 1, trocas)
+        quick_sort(clone, 0, tamanho - 1, 0, 1)
         tempo_fim = time.time()
         tempo = tempo_fim - tempo_inicio
-        escreve_stats_mediana_hoare("TAMANHO ENRTADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES" + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        escreve_stats_mediana_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
         trocas = 0
+        recursoes = -1
 
         clone = line.copy()
         tempo_inicio = time.time()
-        quick_sort(clone, 0, tamanho - 1, 0, 0, trocas)
+        quick_sort(clone, 0, tamanho - 1, 0, 0)
         tempo_fim = time.time()
         tempo = tempo_fim - tempo_inicio
-        escreve_stats_aleatorio_hoare("TAMANHO ENRTADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES" + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        escreve_stats_aleatorio_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
         trocas = 0
+        recursoes = -1
