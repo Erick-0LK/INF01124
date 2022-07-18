@@ -136,6 +136,10 @@ def escreve_stats_aleatorio_hoare(string):
 # LABORATÓRIO: 2 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # QUESTÃO: 1 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+## WINDOWS
+# with open(r"C:\Programas\UFRGS\Bacharelado em Ciência da Computação\INF01124 - Classificação & Pesquisa de Dados\Laboratório 2\entrada-quicksort.txt") as file:
+
+## LINUX
 with open('entrada-quicksort.txt') as file:
     for line in file:
 
@@ -149,7 +153,7 @@ with open('entrada-quicksort.txt') as file:
         quick_sort(clone, 0, tamanho - 1, 1, 1)
         tempo_fim = time.time()
         tempo = tempo_fim - tempo_inicio
-        escreve_stats_mediana_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        escreve_stats_mediana_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str( ) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
         trocas = 0
         recursoes = -1
 

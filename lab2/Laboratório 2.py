@@ -159,95 +159,88 @@ def escreve_stats_aleatorio_hoare(string):
     exit.write(string)
     exit.close()
 
-def main():
 
-    # LABORATÓRIO: 2 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # QUESTÃO: 1 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# LABORATÓRIO: 2 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+# QUESTÃO: 1 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    ## WINDOWS
-    # with open(r"C:\Programas\UFRGS\Bacharelado em Ciência da Computação\INF01124 - Classificação & Pesquisa de Dados\Laboratório 2\entrada-quicksort.txt") as file:
+## WINDOWS
+# with open(r"C:\Programas\UFRGS\Bacharelado em Ciência da Computação\INF01124 - Classificação & Pesquisa de Dados\Laboratório 2\entrada-quicksort.txt") as file:
 
-    # LINUX
-    with open('entrada-quicksort.txt') as file:
+# LINUX
+with open('entrada-quicksort.txt') as file:
 
-        for line in file:
+    for line in file:
+        print(len(line))
+        line = line.split()
+        line = [int(i) for i in line]
+        line.pop(0)
+        tamanho = len(line)
+        vec = line.copy()
 
-            line = line.split()
-            line = [int(i) for i in line]
-            line.pop(0)
-            tamanho = len(line)
-            vec = line.copy()
+        ini = 0
+        fim = tamanho - 1
 
-            ini = 0
-            fim = tamanho - 1
+        ## ==============================
+        ## LOMUTO - Mediana
+        ## ==============================
+        tempo_inicio = time.time()
 
-            trocas = 0
-            recursoes = -1
-            
-            ## ==============================
-            ## LOMUTO - Mediana
-            ## ==============================
-            tempo_inicio = time.time()
+        quick_sort(vec, ini, fim, LOMUTO, MEDIANA_TRES)
 
-            quick_sort(vec, ini, fim, LOMUTO, MEDIANA_TRES)
+        tempo_fim = time.time()
+        tempo = tempo_fim - tempo_inicio
+        escreve_stats_mediana_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        
+        trocas = 0
+        recursoes = -1
 
-            tempo_fim = time.time()
-            tempo = tempo_fim - tempo_inicio
-            escreve_stats_mediana_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
-            
-            trocas = 0
-            recursoes = -1
+        ## ==============================
+        ## LOMUTO - Aleatório
+        ## ==============================
 
-            ## ==============================
-            ## LOMUTO - Aleatório
-            ## ==============================
+        vec = line.copy()
+        tempo_inicio = time.time()
 
-            vec = line.copy()
-            tempo_inicio = time.time()
+        quick_sort(vec, ini, fim, LOMUTO, ALEATORIO)
 
-            quick_sort(vec, ini, fim, LOMUTO, ALEATORIO)
+        tempo_fim = time.time()
+        tempo = tempo_fim - tempo_inicio
 
-            tempo_fim = time.time()
-            tempo = tempo_fim - tempo_inicio
+        escreve_stats_aleatorio_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        
+        trocas = 0
+        recursoes = -1
 
-            escreve_stats_aleatorio_lomuto("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
-            
-            trocas = 0
-            recursoes = -1
+        ## ==============================
+        ## HOARE - Mediana
+        ## ==============================
 
-            ## ==============================
-            ## HOARE - Mediana
-            ## ==============================
+        vec = line.copy()
+        tempo_inicio = time.time()
 
-            vec = line.copy()
-            tempo_inicio = time.time()
+        quick_sort(vec, ini, fim, HOARE, MEDIANA_TRES)
 
-            quick_sort(vec, ini, fim, HOARE, MEDIANA_TRES)
+        tempo_fim = time.time()
+        tempo = tempo_fim - tempo_inicio
 
-            tempo_fim = time.time()
-            tempo = tempo_fim - tempo_inicio
+        escreve_stats_mediana_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        
+        trocas = 0
+        recursoes = -1
 
-            escreve_stats_mediana_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
-            
-            trocas = 0
-            recursoes = -1
+        ## ==============================
+        ## HOARE - Aleatório
+        ## ==============================
 
-            ## ==============================
-            ## HOARE - Aleatório
-            ## ==============================
+        vec = line.copy()
+        tempo_inicio = time.time()
 
-            vec = line.copy()
-            tempo_inicio = time.time()
+        quick_sort(vec, ini, fim, HOARE, ALEATORIO)
+        
+        tempo_fim = time.time()
+        tempo = tempo_fim - tempo_inicio
 
-            quick_sort(vec, ini, fim, HOARE, ALEATORIO)
-            
-            tempo_fim = time.time()
-            tempo = tempo_fim - tempo_inicio
-
-            escreve_stats_aleatorio_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
-            
-            trocas = 0
-            recursoes = -1
-
-if __name__ == "__main__":
-    main()
+        escreve_stats_aleatorio_hoare("TAMANHO ENTRADA " + str(tamanho) + "\nSWAPS " + str(trocas) + "\nRECURSOES " + str(recursoes) + "\nTEMPO " + str('{:.6f}'.format(tempo)) + "\n")
+        
+        trocas = 0
+        recursoes = -1
